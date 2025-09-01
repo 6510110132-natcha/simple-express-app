@@ -1,11 +1,10 @@
 pipeline {
     agent any
 
- tools {
-        jdk 'jdk-17'
-        nodejs 'nodejs-lts'  // <-- Use the exact name from Global Tool Configuration
+    environment {
+        SONAR_HOST_URL = 'http://localhost:9001'
+        SONAR_TOKEN = credentials('Simple-Express-App') 
     }
-
 
     stages {
         stage('Checkout') {
@@ -22,9 +21,16 @@ pipeline {
 
         stage('SonarQube Scan') {
             steps {
-                withSonarQubeEnv('SonarQube') {
-                    sh 'npx sonar-scanner -Dsonar.projectKey=simple-express-app'
-                }
+                sh '''
+                docker run --rm \
+                    -v ${PWD}:/usr/src \
+                    -v sonar_cache:/root/.sonar/cache \
+                    sonarsource/sonar-scanner-cli \
+                    -Dsonar.projectKey=simple-express-app \
+                    -Dsonar.sources=. \
+                    -Dsonar.host.url=$SONAR_HOST_URL \
+                    -Dsonar.login=$SONAR_TOKEN
+                '''
             }
         }
 
