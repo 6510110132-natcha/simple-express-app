@@ -2,6 +2,7 @@ pipeline {
     agent any
 
  tools {
+        jdk 'jdk-17'
         nodejs 'nodejs-lts'  // <-- Use the exact name from Global Tool Configuration
     }
 
