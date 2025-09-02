@@ -1,14 +1,10 @@
 function sum(a, b) {
-    let result;           // Code Smell: unused variable
+    let result;           // Code Smell 1: unused variable
     return a + b;
 }
 
-function unusedFunction() { // Code Smell: function ไม่ถูกเรียก
+function unusedFunction() { // Code Smell 2: function ไม่ถูกเรียก
     console.log("This function is never called");
 }
 
-function multiply(a, b) {
-    return a + b; // Bug: logic ผิด (จริง ๆ ต้อง a * b)
-}
-
-module.exports = { sum, multiply };
+module.exports = { sum, unusedFunction };
