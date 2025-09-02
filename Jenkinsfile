@@ -20,7 +20,7 @@ pipeline {
 
         stage('Test') {
             steps {
-                sh 'npm test'  // รัน unit test + generate coverage
+                sh 'node test.js'
             }
         }
 
