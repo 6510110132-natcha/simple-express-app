@@ -1,10 +1,9 @@
 pipeline {
     agent any
 
- tools {
-        nodejs 'nodejs-lts'  // <-- Use the exact name from Global Tool Configuration
+    tools {
+        nodejs 'nodejs-lts'  // ใช้ชื่อที่ตั้งไว้ใน Global Tool Configuration
     }
-
 
     stages {
         stage('Checkout') {
@@ -19,10 +18,16 @@ pipeline {
             }
         }
 
+        stage('Test') {
+            steps {
+                sh 'npm test'  // รัน unit test + generate coverage
+            }
+        }
+
         stage('SonarQube Scan') {
             steps {
                 withSonarQubeEnv('SonarQube') {
-                    sh 'npx sonar-scanner -Dsonar.projectKey=simple-express-app'
+                    sh 'npx sonar-scanner'
                 }
             }
         }
@@ -32,11 +37,6 @@ pipeline {
                 timeout(time: 10, unit: 'MINUTES') {
                     waitForQualityGate abortPipeline: true
                 }
-            }
-        }
-        stage('Test') {
-            steps {
-                sh 'npm test'
             }
         }
     }
