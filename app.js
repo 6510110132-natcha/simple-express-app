@@ -1,4 +1,5 @@
 function sum(a, b) {
+    let result;           // Code Smell: unused variable
     return a + b;
 }
 
